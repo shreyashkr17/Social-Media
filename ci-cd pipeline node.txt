@@ -1,0 +1,76 @@
+1. Install Jenkins in the Windows / linux / Linux Arch
+
+2. Using enabling the jenkins.service using command `sudo systemctl start jenkins` and  `sudo systemctl enable jenkins`
+
+3. Install necessary Jenkins plugins:
+    -Log in to your Jenkins instance at localhost:8090
+    Go to "Manage Jenkins" > "Manage Plugins"
+    In the "Available" tab, search and install these plugins if not already installed:
+
+    "Pipeline"
+    "Git"
+    "Credentials"
+
+
+    Restart Jenkins if required
+
+
+4. Add server password to Jenkins credentials:
+    -Go to "Manage Jenkins" > "Manage Credentials"
+    -Click on "Jenkins" under "Stores scoped to Jenkins"
+    -Click "Global credentials (unrestricted)"
+    -Click "Add Credentials"
+    -Choose "Secret text" as the kind
+    -In "Secret", enter your server password: Ttr@2024
+    -In "ID", enter "ttr-server-password"
+    -Click "Create"
+
+
+5. Install sshpass on Jenkins server:
+    -SSH into your Jenkins server
+    -Run: sudo apt-get update && sudo apt-get install sshpass -y
+
+
+6. Create a new Jenkins pipeline:
+    -On Jenkins dashboard, click "New Item"
+    -Enter a name for your job (e.g., "social-media-backend")
+    -Choose "Pipeline" and click "OK"
+
+
+7. Configure the pipeline:
+    -In the job configuration page:
+    -Under "Pipeline", select "Pipeline script from SCM"
+    -For SCM, choose "Git"
+    -In "Repository URL", enter: https://github.com/shreyashkr17/Social-Media
+    -In "Branch Specifier", enter: */main
+    -In "Script Path", enter: Jenkinsfile
+    -Click "Save"
+
+
+8. Update your GitHub repository:
+    -Add the Jenkinsfile to the root of your repository
+    -Commit and push the changes
+
+
+9. Set up GitHub webhook:
+    -Go to your GitHub repository
+    -Click "Settings" > "Webhooks" > "Add webhook"
+    -For "Payload URL", enter: http://[YOUR-JENKINS-IP]:8090/github-webhook/
+    -For "Content type", choose: application/json
+    -For "Which events would you like to trigger this webhook?", choose: Just the push event
+    -Click "Add webhook"
+
+
+10. Modify the Jenkinsfile:
+    -Update the /path/to/your/project in the Jenkinsfile to the actual path of your project on the VM
+
+
+11. Test the pipeline:
+    -In Jenkins, go to your pipeline and click "Build Now"
+    -Check the console output for any errors and fix as necessary
+
+
+12. Automatic triggering:
+    -Make a small change to your repository
+    -Commit and push to the main branch
+    -Check if the Jenkins job is automatically triggered
